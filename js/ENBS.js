@@ -46,7 +46,7 @@ map.on('load', () => {
     map.addSource('points', {
         type: 'geojson',
         // data: './data/EBNS_epcs_compact_4326_part.geojson'
-        'data': 'data/Cov_epcs_compact_4326.geojson'
+        'data': 'data/Cov_epcs_compact_v3_4326.geojson'
 
     });
 
@@ -457,27 +457,27 @@ map.on('load', () => {
 //         console.log(prop.icon);
 // })
 
-    map.on('idle',function(){
-        var mapLayer = map.queryRenderedFeatures({ layers: ['id2'] });
+//    map.on('idle',function(){
+//        var mapLayer = map.queryRenderedFeatures({ layers: ['id2'] });
         // var mapLayer = map.getSource('points')
-        console.log(mapLayer)
+//        console.log(mapLayer)
         // console.log(mapLayer['features']['properties']['uprn'][0])
 
 
-        map.on('draw.create', function(e) {
+//        map.on('draw.create', function(e) {
             // const userPolygon = draw.getAll();
-            var userPolygon = e.features[0];
-            var pointtocheck = turf.points([
-                [-1.9097609006719085, 52.462021380049995],
-            ]);
-            var ptsWithin = turf.pointsWithinPolygon(pointtocheck, userPolygon);
+//            var userPolygon = e.features[0];
+//            var pointtocheck = turf.points([
+//                [-1.9097609006719085, 52.462021380049995],
+//            ]);
+//            var ptsWithin = turf.pointsWithinPolygon(pointtocheck, userPolygon);
             // var ptsWithin = turf.inside(mapLayer, userPolygon);
             // console.log(ptsWithin);
-        });
+//        });
         // https://docs.mapbox.com/mapbox-gl-js/example/using-box-queryrenderedfeatures/
         // const oocc = mapLayer.map((feature) => feature.properties.uprn);
         // map.setFilter('id2', ['in', 'uprn', ...uprn]);
-    });
+//    });
 
 
 
@@ -647,7 +647,7 @@ document.querySelectorAll('[name="checkboxLayerList"], [name="epcRatingCBs"], [n
         // checkboxLayerShowList = Array.from(document.querySelectorAll("input[name='checkboxLayerList']:checked")).map((elem) => elem.value)
         tenureShowList = Array.from(document.querySelectorAll("input[name='tenureCBs']:checked")).map((elem) => elem.value)
         epcShowList = Array.from(document.querySelectorAll("input[name='epcRatingCBs']:checked")).map((elem) => elem.value)
-    // console.log(checkboxLayerShowList)
+    console.log(checkboxLayerShowList)
 
         // console.log(tenureShowList, epcShowList, bromfordShowList)
 
@@ -656,7 +656,7 @@ document.querySelectorAll('[name="checkboxLayerList"], [name="epcRatingCBs"], [n
         var bromfordFilter = ['in', 'bromford', ...bromfordShowList];
         var heatMapFilter = ['in', 'current_energy_rating', ...epcShowList];
 
-        var combinedFilter = ["all", epcRatingFilter, tenureFilter, bromfordFilter];
+        var combinedFilter = ["all", epcRatingFilter, tenureFilter];
         map.setFilter('id2', combinedFilter);
         map.setFilter('data-driven-circles-labels', combinedFilter);
         // map.setFilter('heatMap', heatMapFilter);
