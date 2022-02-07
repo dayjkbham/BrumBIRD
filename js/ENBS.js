@@ -4,7 +4,7 @@ var map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/light-v10',
     // style: 'mapbox://styles/mapbox/streets-v11',
-    center: [-1.8040, 52.4766],
+    center: [-1.5197, 52.4068],
     zoom: 11,
 });
 
@@ -46,7 +46,7 @@ map.on('load', () => {
     map.addSource('points', {
         type: 'geojson',
         // data: './data/EBNS_epcs_compact_4326_part.geojson'
-        'data': 'data/EBNS_epcs_compact_4326_full.geojson'
+        'data': 'data/Cov_epcs_compact_4326.geojson'
 
     });
 
@@ -57,7 +57,7 @@ map.on('load', () => {
 
     map.addSource('lsoas', {
         type: 'geojson',
-        data: './data/EBNS_LSOA_epc_4326.geojson',
+        data: './data/Cov_LSOA_4326.geojson',
         // promoteId: 'LSOA11CD' // promote field to be used as a foreign key
     });
 
@@ -108,14 +108,14 @@ map.on('load', () => {
             'fill-color': [
                 'interpolate',
                 ['linear'],
-                ['get', 'LSOA_epc_g_to_d_and_no_epc_percent'],
-                60,'#0e7e58',
-                67,'#2aa45b',
-                74,'#8cbc42',
-                81,'#f6cc15',
-                88,'#f2a867',
-                95,'#f17e23',
-                100,'#e31d3e'
+                ['get', '2022-02-02 Coventry Local Indices for Retrofit_D to G percent'],
+                0.09,'#0e7e58',
+                0.24,'#2aa45b',
+                0.39,'#8cbc42',
+                0.54,'#f6cc15',
+                0.69,'#f2a867',
+                0.84,'#f17e23',
+                0.99,'#e31d3e'
             ],
             'fill-outline-color': 'rgba(0, 0, 0, 0.2)',
             'fill-opacity': 0.5
@@ -526,13 +526,9 @@ map.on('click', function(e) {
         .setLngLat(e.lngLat)
         .setHTML('' +
             '<h3>'+ feature.properties['LSOA11NM'] + '</h3>' +
-            '<p>' + feature.properties['LSOA_uprn_count'] + ' number of dwellings' + '</p>' +
-            '<p>' + '(' + feature.properties['LSOA_epc_g_to_d_count'] + ') ' +
-            feature.properties['LSOA_epc_g_to_d_percent'] + '% of dwellings with epcs G to D' + '</p>' +
-            '<p>' + '(' + feature.properties['LSOA_no epc_count'] + ') ' +
-            feature.properties['LSOA_no epc_percent'] + '% of dwellings without epc' + '</p>' +
-            '<p>' + '(' + feature.properties['LSOA_epc_g_to_d_and_no_epc_count'] + ') ' +
-            feature.properties['LSOA_epc_g_to_d_and_no_epc_percent'] + '% of dwellings with epc G to D or no epc' + '</p>'
+            '<p>' + feature.properties['2022-02-02 Coventry Local Indices for Retrofit_Households'] + ' number of dwellings' + '</p>' +
+            '<p>' + feature.properties['2022-02-02 Coventry Local Indices for Retrofit_D to G percent'].toPrecision(3) + ' proportion of dwellings with epcs G to D' + '</p>'
+            // add more info later '<p>' + feature.properties['LSOA_no epc_count'] + ') ' +
         )
         .addTo(map);
 });
