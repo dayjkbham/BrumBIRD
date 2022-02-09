@@ -52,7 +52,7 @@ map.on('load', () => {
 
     map.addSource('wards', {
         type: 'geojson',
-        data: './data/CLP-wards_4326.geojson'
+        data: './data/Cov_wards_4326.geojson'
     });
 
     map.addSource('lsoas', {
@@ -122,6 +122,80 @@ map.on('load', () => {
         }
     });
 
+    map.addLayer({
+        "id": "lsoaChoropleth2",
+        "type": "fill",
+        "source": "lsoas",
+        "paint": {
+            'fill-color': [
+                'interpolate',
+                ['linear'],
+                ['get', '2022-02-02 Coventry Local Indices for Retrofit_Income Local Decile'],
+                1,'#660000',
+                2,'#cc0000',
+                3,'#f44336',
+                4,'#e06666',
+                5,'#f4cccc',
+                6,'#d0e0e3',
+                7,'#9fc5e8',
+                8,'#2986cc',
+                9,'#0b5394',
+                10,'#073763'
+            ],
+            'fill-outline-color': 'rgba(0, 0, 0, 0.2)',
+            'fill-opacity': 0.5
+        }
+    });
+
+    map.addLayer({
+        "id": "lsoaChoropleth3",
+        "type": "fill",
+        "source": "lsoas",
+        "paint": {
+            'fill-color': [
+                'interpolate',
+                ['linear'],
+                ['get', '2022-02-02 Coventry Local Indices for Retrofit_Owned_percent'],
+                0.05,'#ffffff',
+                0.2,'#f3f6f4',
+                0.3,'#eeeeee',
+                0.4,'#d9ead3',
+                0.5,'#C4F2CE',
+                0.6,'#7BEDD3',
+                0.7,'#53D5D7',
+                0.8,'#00A5E1',
+                0.9,'#2D58BD',
+                1.0,'#3D388F'
+            ],
+            'fill-outline-color': 'rgba(0, 0, 0, 0.2)',
+            'fill-opacity': 0.5
+        }
+    });
+
+    map.addLayer({
+        "id": "lsoaChoropleth4",
+        "type": "fill",
+        "source": "lsoas",
+        "paint": {
+            'fill-color': [
+                'interpolate',
+                ['linear'],
+                ['get', '2022-02-02 Coventry Local Indices for Retrofit_Total Score'],
+                7.5,'#51087E',
+                10,'#6C0BA9',
+                12.5,'#880ED4',
+                15,'#A020F0',
+                17.5,'#B24BF3',
+                20,'#C576F6',
+                22.5,'#D7A1F9',
+                25,'#d9d2e9',
+                27.5,'#f3f6f4',
+                30,'#ffffff'
+            ],
+            'fill-outline-color': 'rgba(0, 0, 0, 0.2)',
+            'fill-opacity': 0.5
+        }
+    });
 //     map.addLayer(
 //         {
 //             'id': 'heatMap',
@@ -408,6 +482,42 @@ map.on('load', () => {
         }
     });
 
+    // define layer names
+    const layers = [
+        ' 9% - 23%',
+        '24% - 38%',
+        '39% - 53%',
+        '54% - 68%',
+        '69% - 83%',
+        '84% - 98%',
+        '98%+'
+    ];
+    const colors = [
+        '#0e7e58',
+        '#2aa45b',
+        '#8cbc42',
+        '#f6cc15',
+        '#f2a867',
+        '#f17e23',
+        '#e31d3e'
+    ];
+
+    // create legend
+    const legend = document.getElementById('legend');
+
+    layers.forEach((layer, i) => {
+        const color = colors[i];
+        const item = document.createElement('div');
+        const key = document.createElement('span');
+        key.className = 'legend-key';
+        key.style.backgroundColor = color;
+
+        const value = document.createElement('span');
+        value.innerHTML = `${layer}`;
+        item.appendChild(key);
+        item.appendChild(value);
+        legend.appendChild(item);
+    });
 
 
 //     map.addSource('pointsInUserPolygon', {
@@ -527,12 +637,82 @@ map.on('click', function(e) {
         .setHTML('' +
             '<h3>'+ feature.properties['LSOA11NM'] + '</h3>' +
             '<p>' + feature.properties['2022-02-02 Coventry Local Indices for Retrofit_Households'] + ' number of dwellings' + '</p>' +
-            '<p>' + feature.properties['2022-02-02 Coventry Local Indices for Retrofit_D to G percent'].toPrecision(3) + ' proportion of dwellings with epcs G to D' + '</p>'
+            '<p>' + (100*feature.properties['2022-02-02 Coventry Local Indices for Retrofit_D to G percent']).toPrecision(3) + '% of dwellings with epcs G to D' + '</p>' +
+            '<p>' + (100*feature.properties['2022-02-02 Coventry Local Indices for Retrofit_E to G percent']).toPrecision(3) + '% of dwellings with epcs G to E' + '</p>'
             // add more info later '<p>' + feature.properties['LSOA_no epc_count'] + ') ' +
         )
         .addTo(map);
 });
 
+map.on('click', function(e) {
+    var features = map.queryRenderedFeatures(e.point, {
+        layers: ['lsoaChoropleth2'] // replace this with the name of the layer
+    });
+
+    if (!features.length) {
+        return;
+    }
+
+    var feature = features[0];
+
+    var popup = new mapboxgl.Popup({ offset: [0, -15] })
+        .setLngLat(e.lngLat)
+        .setHTML('' +
+            '<h3>'+ feature.properties['LSOA11NM'] + '</h3>' +
+            '<p>' + feature.properties['2022-02-02 Coventry Local Indices for Retrofit_Households'] + ' number of dwellings' + '</p>' +
+            '<p>' + 'Decile ' + (feature.properties['2022-02-02 Coventry Local Indices for Retrofit_Income Local Decile']) + ' for local income deprivation' + '</p>' +
+            '<p>' + 'Decile ' + (feature.properties['2022-02-02 Coventry Local Indices for Retrofit_Income Decile (where 1 is most deprived 10% of LSOAs)']) + ' for national income deprivation' + '</p>'
+            // add more info later '<p>' + feature.properties['LSOA_no epc_count'] + ') ' +
+        )
+        .addTo(map);
+});
+
+map.on('click', function(e) {
+    var features = map.queryRenderedFeatures(e.point, {
+        layers: ['lsoaChoropleth3'] // replace this with the name of the layer
+    });
+
+    if (!features.length) {
+        return;
+    }
+
+    var feature = features[0];
+
+    var popup = new mapboxgl.Popup({ offset: [0, -15] })
+        .setLngLat(e.lngLat)
+        .setHTML('' +
+            '<h3>'+ feature.properties['LSOA11NM'] + '</h3>' +
+            '<p>' + feature.properties['2022-02-02 Coventry Local Indices for Retrofit_Households'] + ' number of dwellings' + '</p>' +
+            '<p>' + (100*feature.properties['2022-02-02 Coventry Local Indices for Retrofit_Owned_percent']).toPrecision(3) + '% of homes owner occupied' + '</p>' +
+            '<p>' + (feature.properties['2022-02-02 Coventry Local Indices for Retrofit_Owned']) + ' number of owner occupied homes' + '</p>'
+            // add more info later '<p>' + feature.properties['LSOA_no epc_count'] + ') ' +
+        )
+        .addTo(map);
+});
+
+map.on('click', function(e) {
+    var features = map.queryRenderedFeatures(e.point, {
+        layers: ['lsoaChoropleth4'] // replace this with the name of the layer
+    });
+
+    if (!features.length) {
+        return;
+    }
+
+    var feature = features[0];
+
+    var popup = new mapboxgl.Popup({ offset: [0, -15] })
+        .setLngLat(e.lngLat)
+        .setHTML('' +
+            '<h3>'+ feature.properties['LSOA11NM'] + '</h3>' +
+            '<p>' + 'Decile ' + feature.properties['2022-02-02 Coventry Local Indices for Retrofit_Ownership Local Decile'] + ' for owner-occupiers' + '</p>' +
+            '<p>' + 'Decile ' + feature.properties['2022-02-02 Coventry Local Indices for Retrofit_Income Local Decile'] + ' for local income deprivation' + '</p>' +
+            '<p>' + 'Decile ' + (feature.properties['2022-02-02 Coventry Local Indices for Retrofit_EPC D to G Decile']) + ' for poor building energy performance' + '</p>' +
+            '<p>' + (feature.properties['2022-02-02 Coventry Local Indices for Retrofit_Total Score']) + ' overall LAD prioritisation score (lower score = higher priority)' + '</p>'
+            // add more info later '<p>' + feature.properties['LSOA_no epc_count'] + ') ' +
+        )
+        .addTo(map);
+});
 // map.on('click', function(e) {
 //     // var feature = map.getSource('id2')._options.data;
 //     //
@@ -570,7 +750,7 @@ map.on('click', function(e) {
 // });
 
 var checkboxLayerShowList = ['LSOA boundaries',
-    'lsoaChoropleth'
+    'lsoaChoropleth', 'lsoaChoropleth2'
 ]
 
 
