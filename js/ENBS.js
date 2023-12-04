@@ -52,7 +52,7 @@ map.on('load', () => {
 
     map.addSource('wards', {
         type: 'geojson',
-        data: './data/BRUMBIRD wards v2.geojson'
+        data: './data/BRUMBIRD_wards_v2.geojson'
     });
 
     map.addSource('lsoas', {
