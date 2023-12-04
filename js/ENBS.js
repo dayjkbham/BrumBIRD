@@ -52,7 +52,7 @@ map.on('load', () => {
 
     map.addSource('wards', {
         type: 'geojson',
-        data: './data/wards_4326.geojson'
+        data: './data/wards_4326.geojson',
     });
 
     map.addSource('lsoas', {
