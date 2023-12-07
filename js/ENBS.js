@@ -55,9 +55,9 @@ map.on('load', () => {
         data: './data/wards_4326.geojson',
     });
 
-    map.addSource('lsoas', {
+    map.addSource('oas', {
         type: 'geojson',
-        data: './data/Cov_LSOA_4326.geojson',
+        data: './data/OA_4326.geojson',
         // promoteId: 'LSOA11CD' // promote field to be used as a foreign key
     });
 
@@ -101,21 +101,21 @@ map.on('load', () => {
     ]);
 
     map.addLayer({
-        "id": "lsoaChoropleth",
+        "id": "oaChoropleth",
         "type": "fill",
-        "source": "lsoas",
+        "source": "oas",
         "paint": {
             'fill-color': [
                 'interpolate',
                 ['linear'],
-                ['get', '2022-02-02 Coventry Local Indices for Retrofit_D to G percent'],
-                0.09,'#0e7e58',
-                0.24,'#2aa45b',
-                0.39,'#8cbc42',
-                0.54,'#f6cc15',
-                0.69,'#f2a867',
-                0.84,'#f17e23',
-                0.99,'#e31d3e'
+                ['get', 'percent_eligible'],
+                0.11,'#0e7e58',
+                0.23,'#2aa45b',
+                0.34,'#8cbc42',
+                0.46,'#f6cc15',
+                0.57,'#f2a867',
+                0.69,'#f17e23',
+                0.80,'#e31d3e'
             ],
             'fill-outline-color': 'rgba(0, 0, 0, 0.2)',
             'fill-opacity': 0.5
