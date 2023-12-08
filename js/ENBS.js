@@ -623,7 +623,7 @@ switchlayer = function (lname) {
 
 map.on('click', function(e) {
     var features = map.queryRenderedFeatures(e.point, {
-        layers: ['lsoaChoropleth'] // replace this with the name of the layer
+        layers: ['oaChoropleth'] // replace this with the name of the layer
     });
 
     if (!features.length) {
@@ -635,7 +635,7 @@ map.on('click', function(e) {
     var popup = new mapboxgl.Popup({ offset: [0, -15] })
         .setLngLat(e.lngLat)
         .setHTML('' +
-            '<h3>'+ feature.properties['LSOA11NM'] + '</h3>' +
+            '<h3>'+ feature.properties['OA21CD'] + '</h3>' +
             '<p>' + feature.properties['2022-02-02 Coventry Local Indices for Retrofit_Households'] + ' number of dwellings' + '</p>' +
             '<p>' + (100*feature.properties['2022-02-02 Coventry Local Indices for Retrofit_D to G percent']).toPrecision(3) + '% of dwellings with epcs G to D' + '</p>' +
             '<p>' + (100*feature.properties['2022-02-02 Coventry Local Indices for Retrofit_E to G percent']).toPrecision(3) + '% of dwellings with epcs G to E' + '</p>'
