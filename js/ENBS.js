@@ -638,7 +638,7 @@ map.on('click', function(e) {
             '<h3>'+ feature.properties['OA21CD'] + '</h3>' +
             '<p>' + feature.properties['OO_eligible'] + ' eligible owner occupied households ' + '</p>' +
             '<p>' + feature.properties['PRS_eligible'] + ' eligible private rented households ' + '</p>' +
-            '<p>' + (100*feature.properties['total_eligible']).toPrecision(3) + '% of households eligible' + '</p>'
+            '<p>' + (100*feature.properties['percent_eligible']).toPrecision(3) + '% of households eligible' + '</p>'
             // add more info later '<p>' + feature.properties['LSOA_no epc_count'] + ') ' +
         )
         .addTo(map);
