@@ -636,9 +636,9 @@ map.on('click', function(e) {
         .setLngLat(e.lngLat)
         .setHTML('' +
             '<h3>'+ feature.properties['OA21CD'] + '</h3>' +
-            '<p>' + feature.properties['2022-02-02 Coventry Local Indices for Retrofit_Households'] + ' number of dwellings' + '</p>' +
-            '<p>' + (100*feature.properties['2022-02-02 Coventry Local Indices for Retrofit_D to G percent']).toPrecision(3) + '% of dwellings with epcs G to D' + '</p>' +
-            '<p>' + (100*feature.properties['2022-02-02 Coventry Local Indices for Retrofit_E to G percent']).toPrecision(3) + '% of dwellings with epcs G to E' + '</p>'
+            '<p>' + feature.properties['OO_eligible'] + ' eligible owner occupied households ' + '</p>' +
+            '<p>' + feature.properties['PRS_eligible'] + ' eligible private rented households ' + '</p>' +
+            '<p>' + (100*feature.properties['total_eligible']).toPrecision(3) + '% of households eligible' + '</p>'
             // add more info later '<p>' + feature.properties['LSOA_no epc_count'] + ') ' +
         )
         .addTo(map);
