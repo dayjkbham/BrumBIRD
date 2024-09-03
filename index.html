@@ -22,7 +22,7 @@
         }).addTo(map);
 
         // Load GeoJSON data
-        fetch('your_data.geojson')
+        fetch('./data/OA_4326.geojson')
             .then(response => response.json())
             .then(data => {
                 // Create a GeoJSON layer
